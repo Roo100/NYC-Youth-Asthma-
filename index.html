@@ -608,6 +608,7 @@ td strong{
       <h2><span class="info-dot">i</span> About the data</h2>
       <p>The map shows patterns, not individual outcomes, by comparing asthma burden and social conditions across NYC neighborhoods.</p>
       <p>Values are labeled as <span class="badge">Observed/source data</span> to distinguish source data from gap-filled estimates.</p>
+      <p id="dataFreshnessText">Checking latest available NYC Health source periods…</p>
     </div>
   </div>
 
@@ -762,6 +763,7 @@ const SOURCES = {
     'https://services3.arcgis.com/9nfxWATFamVUTTGb/ArcGIS/rest/services/NTA_Population_MAP_WFL1/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson'
   ],
   geoLookup: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/geography/GeoLookup.json',
+  timePeriods: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/indicators/metadata/TimePeriods.json',
   asthmaEd: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/indicators/data/2383.json',
   asthmaHosp: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/indicators/data/2386.json',
   asthmaEdApi: [
@@ -789,6 +791,7 @@ let selectedLayer = 'Youth_Asthma_Hosp_Rate_5_17_per_10000';
 let boroughFilter = 'all';
 let searchText = '';
 let geoLookupById = new Map();
+let timePeriodLabels = new Map();
 let rankingView = 'summary';
 let povertyBoroughView = 'all';
 let asthmaBoroughView = 'all';
@@ -1090,6 +1093,23 @@ function buildGeoLookup(payload) {
       const id = String(row.GeoID || '').trim();
       if (id) geoLookupById.set(id, row);
     });
+}
+
+function buildTimePeriodLabels(payload) {
+  timePeriodLabels = new Map();
+  normalizeRows(payload).forEach(row => {
+    const id = String(row.TimePeriodID ?? '').trim();
+    if (id) timePeriodLabels.set(id, row.TimePeriod || `time period ${id}`);
+  });
+}
+
+function latestSourcePeriod(dataMap) {
+  const ids = [...dataMap.values()]
+    .map(item => numeric(item?.row?.TimePeriodID ?? item?.year))
+    .filter(Number.isFinite);
+  if (!ids.length) return 'not available';
+  const latestId = String(Math.max(...ids));
+  return timePeriodLabels.get(latestId) || `time period ${latestId}`;
 }
 
 function applyOfficialAsthmaData() {
@@ -1891,17 +1911,23 @@ async function init() {
 
     setTextSafe('status', 'Loading official EHDP youth asthma data…');
     let officialMatches = 0;
+    let edPeriod = 'not available';
+    let hospPeriod = 'not available';
     try {
-      const [geoLookupRows, edRows, hospRows] = await Promise.all([
+      const [geoLookupRows, timeRows, edRows, hospRows] = await Promise.all([
         fetchAnyJson(SOURCES.geoLookup),
+        fetchAnyJson(SOURCES.timePeriods),
         fetchAnyJson(SOURCES.asthmaEd),
         fetchAnyJson(SOURCES.asthmaHosp)
       ]);
       buildGeoLookup(geoLookupRows);
+      buildTimePeriodLabels(timeRows);
       officialData.ed_rate = buildOfficialMap(edRows, MEASURES.ed_rate);
       officialData.ed_number = buildOfficialMap(edRows, MEASURES.ed_number);
       officialData.hosp_rate = buildOfficialMap(hospRows, MEASURES.hosp_rate);
       officialData.hosp_number = buildOfficialMap(hospRows, MEASURES.hosp_number);
+      edPeriod = latestSourcePeriod(officialData.ed_rate);
+      hospPeriod = latestSourcePeriod(officialData.hosp_rate);
       officialMatches = applyOfficialAsthmaData();
     } catch(e) {
       console.warn('Official EHDP optional load failed; complete modeled/starter dataset remains active.', e);
@@ -1918,6 +1944,10 @@ async function init() {
     setTextSafe('status', edCount
       ? `Loaded successfully. Official EHDP asthma rates matched to ${officialMatches} neighborhoods; demographic context uses starter rows plus modeled estimates for gaps.`
       : 'Loaded successfully. Complete NTA2010 dataset generated for every neighborhood using starter rows plus modeled estimates for gaps.');
+    setTextSafe('dataFreshnessText', edCount
+      ? `Latest official NYC Health EHDP source periods loaded: youth asthma ED visits ${edPeriod}; youth asthma hospitalizations ${hospPeriod}. These are the latest periods available in the source files, not current-year counts.`
+      : 'Official asthma source periods could not be loaded; starter/modeled values remain visible for gaps.'
+    );
 
     draw();
   } catch(err) {
