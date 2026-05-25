@@ -371,6 +371,31 @@ select:focus,input:focus{
   letter-spacing:.18em;
   text-transform:uppercase;
 }
+.selected-neighborhood-card{
+  border:1px solid var(--line);
+  border-left:5px solid var(--teal);
+  border-radius:12px;
+  background:#FBFDFE;
+  padding:14px 16px;
+  margin-bottom:16px;
+  color:#243751;
+  font-size:13px;
+  line-height:1.45;
+}
+.selected-neighborhood-card .tt-title{
+  font-size:17px;
+}
+.selected-neighborhood-card .tt-row{
+  border-top:1px solid var(--line-soft);
+  padding:7px 0;
+}
+.selected-neighborhood-card .tt-row:first-of-type{
+  border-top:none;
+}
+.selected-placeholder{
+  color:#52657a;
+  margin:0;
+}
 .metric-grid{
   display:grid;
   grid-template-columns:1fr;
@@ -644,6 +669,11 @@ td strong{
     </div>
 
     <div class="panel">
+      <h2>Neighborhood summary</h2>
+      <div class="selected-neighborhood-card" id="selectedNeighborhoodSummary">
+        <p class="selected-placeholder">Click a neighborhood on the map to keep its asthma, poverty, income, race/ethnicity, working-class context, and data status visible here.</p>
+      </div>
+
       <h2>Neighborhood rankings</h2>
 
       <div class="metric-grid">
@@ -759,6 +789,7 @@ let rankingView = 'summary';
 let povertyBoroughView = 'all';
 let asthmaBoroughView = 'all';
 let neighborhoodBoroughView = 'all';
+let selectedFeature = null;
 
 let officialData = {
   ed_rate: new Map(),
@@ -1450,7 +1481,10 @@ function draw() {
       d3.select(this).attr('stroke','#fff').attr('stroke-width',.9);
       hideTooltip();
     })
-    .on('click', function(event, d) { showTooltip(event, d); });
+    .on('click', function(event, d) {
+      showNeighborhoodSummary(d);
+      hideTooltip();
+    });
 
   addLabels(root, visible.length ? visible : geoFeatures);
 
@@ -1462,6 +1496,7 @@ function draw() {
 
   updateLegend();
   updateTable();
+  renderSelectedNeighborhoodSummary();
 }
 
 function addLabels(root, features) {
@@ -1525,6 +1560,14 @@ function showTooltip(event, feature) {
   tooltip.innerHTML = tooltipHtml(feature);
   tooltip.style.display = 'block';
   moveTooltip(event);
+}
+function renderSelectedNeighborhoodSummary() {
+  if (!selectedFeature) return;
+  setHTMLSafe('selectedNeighborhoodSummary', tooltipHtml(selectedFeature));
+}
+function showNeighborhoodSummary(feature) {
+  selectedFeature = feature;
+  renderSelectedNeighborhoodSummary();
 }
 function moveTooltip(event) {
   const pad = 16;
