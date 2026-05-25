@@ -58,6 +58,28 @@ body{
   align-items:start;
   margin-bottom:22px;
 }
+.top-link{
+  display:inline-block;
+  margin:0 0 18px;
+  padding:8px 13px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--teal-dark);
+  font-family:Optima, Candara, "Trebuchet MS", Arial, sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-decoration:none;
+  text-transform:uppercase;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.top-link:hover,
+.top-link:focus{
+  background:var(--teal-dark);
+  border-color:var(--teal-dark);
+  color:#fff;
+}
 .brand-icon{
   width:118px;
   height:126px;
@@ -151,6 +173,24 @@ body{
   background:#fff5f5;
   color:#8b1e1e;
 }
+.summary-note{
+  border:1px solid var(--line);
+  border-left:5px solid var(--teal);
+  border-radius:12px;
+  background:#FBFDFE;
+  box-shadow:0 6px 16px rgba(15,39,70,.05);
+  padding:14px 16px;
+  margin:0 0 16px;
+  color:#243751;
+  font-size:14px;
+  line-height:1.5;
+}
+.summary-note strong{
+  color:var(--ink);
+  font-family:Optima, Candara, "Trebuchet MS", Arial, sans-serif;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
 .controls-grid{
   display:grid;
   grid-template-columns:1fr;
@@ -228,65 +268,70 @@ select:focus,input:focus{
 }
 .main-grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 390px;
+  grid-template-columns:minmax(0,760px) 390px;
   gap:18px;
-  align-items:stretch;
+  align-items:start;
+  justify-content:center;
 }
 #map-wrap{
   position:relative;
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
   border:1px solid #C9D9E4;
   border-radius:14px;
   background:#DDEFF7;
   overflow:hidden;
-  min-height:620px;
   box-shadow:var(--shadow);
 }
 #map-svg{display:block;width:100%;height:auto}
 .map-legend-overlay{
-  position:absolute;
-  left:16px;
-  top:16px;
-  width:230px;
+  width:100%;
+  max-width:760px;
+  margin:10px auto 0;
   background:rgba(255,255,255,.96);
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:14px 14px 12px;
-  box-shadow:0 8px 20px rgba(15,39,70,.10);
-  z-index:4;
+  border-radius:10px;
+  padding:10px 12px;
+  box-shadow:0 6px 16px rgba(15,39,70,.07);
 }
 .legend-head{
-  margin:0 0 10px;
+  margin:0 0 7px;
   color:var(--ink);
   font-family:Optima, Candara, "Trebuchet MS", Arial, sans-serif;
-  font-size:15px;
+  font-size:11px;
   line-height:1.25;
   font-weight:500;
-  letter-spacing:.08em;
+  letter-spacing:.05em;
   text-transform:uppercase;
 }
-.legend-items{display:flex;flex-direction:column;gap:7px}
+.legend-items{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:5px 12px;
+}
 .legend-item{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:7px;
   color:#1D2E45;
   font-family:Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  font-size:14px;
+  font-size:11px;
 }
 .legend-swatch{
-  width:24px;
-  height:24px;
+  width:16px;
+  height:16px;
   border-radius:3px;
   border:1px solid rgba(0,0,0,.08);
   flex:0 0 auto;
 }
 .legend-foot{
-  margin-top:12px;
+  margin-top:8px;
   display:flex;
   align-items:center;
   gap:8px;
   color:#1D2E45;
-  font-size:12px;
+  font-size:10px;
 }
 .map-underbar{display:none}
 .map-zoom{
@@ -359,6 +404,53 @@ select:focus,input:focus{
   width:40px;height:40px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   background:#E6F3FF;color:#0F4D78;font-size:17px;
+}
+.rank-menu{
+  margin-bottom:12px;
+}
+.ranking-summary{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#FBFDFE;
+  padding:13px 14px;
+  margin-bottom:12px;
+  color:#243751;
+  font-size:13px;
+  line-height:1.5;
+}
+.ranking-summary strong{
+  color:var(--ink);
+}
+.ranking-summary ol{
+  margin:8px 0 0 20px;
+  padding:0;
+}
+.ranking-summary li{
+  margin:4px 0;
+}
+.asthma-summary,
+.poverty-summary{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:13px 14px;
+  margin:0 0 12px;
+  color:#243751;
+  font-size:13px;
+  line-height:1.5;
+}
+.asthma-summary strong,
+.poverty-summary strong{
+  color:var(--ink);
+}
+.asthma-summary ul,
+.poverty-summary ul{
+  margin:8px 0 0 18px;
+  padding:0;
+}
+.asthma-summary li,
+.poverty-summary li{
+  margin:4px 0;
 }
 .table-scroll{
   border:1px solid var(--line);
@@ -453,13 +545,14 @@ td strong{
   .header-copy h1{font-size:28px}
   .control-row{grid-template-columns:1fr;gap:12px}
   .main-grid{grid-template-columns:1fr}
-  .map-legend-overlay{position:static;width:auto;margin:12px}
+  .map-legend-overlay{width:auto;margin:10px 0 0}
   .map-underbar{display:none}
 }
 </style>
 </head>
 <body>
 <div class="container">
+<a class="top-link" href="https://roo100.github.io/">← Back to Portfolio</a>
 <div class="page-header">
     <div class="brand-icon" aria-label="Youth asthma icon" role="img">
       <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
@@ -487,6 +580,10 @@ td strong{
 
   <div id="status" class="status ok">Loaded successfully. Complete neighborhood dataset generated.</div>
 
+  <div class="summary-note">
+    <strong>What working class means:</strong> this map uses working-class context as a neighborhood-level economic measure, not a label for any individual resident. The score combines lower median household income, higher poverty, and lower bachelor’s degree attainment. Higher scores mean a neighborhood has more economic conditions often associated with working-class communities, which helps compare where youth asthma burden overlaps with broader inequality.
+  </div>
+
 
   <div class="controls-grid">
     <div class="control-card">
@@ -496,7 +593,7 @@ td strong{
           <label for="layerSelect">Map layer</label>
           <select id="layerSelect">
             <option value="Youth_Asthma_ED_Rate_5_17_per_10000">Youth asthma ED rate, ages 5–17</option>
-            <option value="Youth_Asthma_Hosp_Rate_5_17_per_10000">Youth asthma hospitalization rate, ages 5–17</option>
+            <option value="Youth_Asthma_Hosp_Rate_5_17_per_10000" selected>Youth asthma hospitalization rate, ages 5–17</option>
             <option value="Median_Household_Income">Median household income</option>
             <option value="Poverty_Rate_Percent">Poverty rate</option>
             <option value="Bachelors_or_Higher_Percent">Bachelor’s degree or higher</option>
@@ -532,15 +629,15 @@ td strong{
     <div>
       <div id="map-wrap">
         <svg id="map-svg" viewBox="0 0 760 640" preserveAspectRatio="xMidYMid meet" aria-label="NYC neighborhood youth asthma map"></svg>
-        <div class="map-legend-overlay">
-          <div class="legend-head" id="legendOverlayTitle">Youth asthma ED rate, ages 5–17<br><span style="font-family:Palatino, 'Palatino Linotype', Georgia, serif;font-size:13px;letter-spacing:0;text-transform:none;color:#28435e">(NYC neighborhoods)</span></div>
-          <div class="legend-items" id="legendItems"></div>
-          <div class="legend-foot"><span>Source: NYC neighborhoods</span> <span style="font-weight:700;border:1px solid #cbd5df;border-radius:999px;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:11px">i</span></div>
-        </div>
         <div class="map-zoom">
           <button class="zoom-btn" id="zoomInBtn" aria-label="Zoom in">+</button>
           <button class="zoom-btn" id="zoomOutBtn" aria-label="Zoom out">−</button>
         </div>
+      </div>
+      <div class="map-legend-overlay">
+        <div class="legend-head" id="legendOverlayTitle">Youth asthma hospitalization rate, ages 5–17<br><span style="font-family:Palatino, 'Palatino Linotype', Georgia, serif;font-size:13px;letter-spacing:0;text-transform:none;color:#28435e">(NYC neighborhoods)</span></div>
+        <div class="legend-items" id="legendItems"></div>
+        <div class="legend-foot"><span>Source: NYC neighborhoods</span> <span style="font-weight:700;border:1px solid #cbd5df;border-radius:999px;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:11px">i</span></div>
       </div>
 </div>
       <p class="note lower-info">Hover over any neighborhood to view youth asthma values and neighborhood health-equity context.</p>
@@ -552,11 +649,59 @@ td strong{
       <div class="metric-grid">
         <div class="metric-box"><div class="metric-text"><div class="metric-label">NYC neighborhoods</div><div class="metric-value" id="kpiTotal">—</div></div><div class="metric-icon">◈</div></div>
         <div class="metric-box"><div class="metric-text"><div class="metric-label">High-asthma neighborhoods</div><div class="metric-value" id="kpiAsthma">—</div></div><div class="metric-icon">◉</div></div>
-        <div class="metric-box"><div class="metric-text"><div class="metric-label">Highest selected value</div><div class="metric-value" id="kpiHigh">—</div></div><div class="metric-icon">↗</div></div>
-        <div class="metric-box"><div class="metric-text"><div class="metric-label">High-poverty neighborhoods</div><div class="metric-value" id="kpiDemo">—</div></div><div class="metric-icon">▣</div></div>
+        <div class="metric-box"><div class="metric-text"><div class="metric-label">Highest value in this map view</div><div class="metric-value" id="kpiHigh">—</div></div><div class="metric-icon">↗</div></div>
       </div>
 
-      <div class="table-scroll">
+      <div class="field rank-menu">
+        <label for="neighborhoodBoroughView">NYC neighborhoods by borough</label>
+        <select id="neighborhoodBoroughView">
+          <option value="all" selected>All boroughs</option>
+          <option value="Bronx">Bronx</option>
+          <option value="Brooklyn">Brooklyn</option>
+          <option value="Manhattan">Manhattan</option>
+          <option value="Queens">Queens</option>
+          <option value="Staten Island">Staten Island</option>
+        </select>
+      </div>
+
+      <div class="field rank-menu">
+        <label for="asthmaBoroughView">High-asthma summary by borough</label>
+        <select id="asthmaBoroughView">
+          <option value="all" selected>All boroughs</option>
+          <option value="Bronx">Bronx</option>
+          <option value="Brooklyn">Brooklyn</option>
+          <option value="Manhattan">Manhattan</option>
+          <option value="Queens">Queens</option>
+          <option value="Staten Island">Staten Island</option>
+        </select>
+      </div>
+      <div class="asthma-summary" id="asthmaSummary">Loading asthma summary…</div>
+
+      <div class="field rank-menu">
+        <label for="povertyBoroughView">High-poverty summary by borough</label>
+        <select id="povertyBoroughView">
+          <option value="all" selected>All boroughs</option>
+          <option value="Bronx">Bronx</option>
+          <option value="Brooklyn">Brooklyn</option>
+          <option value="Manhattan">Manhattan</option>
+          <option value="Queens">Queens</option>
+          <option value="Staten Island">Staten Island</option>
+        </select>
+      </div>
+      <div class="poverty-summary" id="povertySummary">Loading poverty summary…</div>
+
+      <div class="field rank-menu">
+        <label for="rankingView">Ranking view</label>
+        <select id="rankingView">
+          <option value="summary" selected>Summary</option>
+          <option value="top10">Top 10 neighborhoods</option>
+          <option value="full">Full ranking list</option>
+        </select>
+      </div>
+
+      <div class="ranking-summary" id="rankingSummary">Loading ranking summary…</div>
+
+      <div class="table-scroll" id="rankListPanel" hidden>
         <table>
           <thead><tr><th>Neighborhood</th><th>Selected value</th></tr></thead>
           <tbody id="rankBody">
@@ -582,6 +727,7 @@ const SOURCES = {
     'https://services1.arcgis.com/LXbM9ydfDv6vSfJb/ArcGIS/rest/services/2010_Neighborhood_Tabulation_Areas_%28NTAs%29/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson',
     'https://services3.arcgis.com/9nfxWATFamVUTTGb/ArcGIS/rest/services/NTA_Population_MAP_WFL1/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson'
   ],
+  geoLookup: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/geography/GeoLookup.json',
   asthmaEd: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/indicators/data/2383.json',
   asthmaHosp: 'https://raw.githubusercontent.com/nychealth/EHDP-data/production/indicators/data/2386.json',
   asthmaEdApi: [
@@ -605,9 +751,14 @@ const MEASURES = {
 
 let geoFeatures = [];
 let completeData = new Map();
-let selectedLayer = 'Median_Household_Income';
+let selectedLayer = 'Youth_Asthma_Hosp_Rate_5_17_per_10000';
 let boroughFilter = 'all';
 let searchText = '';
+let geoLookupById = new Map();
+let rankingView = 'summary';
+let povertyBoroughView = 'all';
+let asthmaBoroughView = 'all';
+let neighborhoodBoroughView = 'all';
 
 let officialData = {
   ed_rate: new Map(),
@@ -639,10 +790,10 @@ const LAYER_LABELS = {
 };
 
 const PALETTES = {
-  asthma:['#F2F7F5','#DDEDE7','#BFE0D6','#92C8BE','#59AFA8','#208A8B'],
+  asthma:['#FFF5F0','#FEE0D2','#FCBBA1','#FC9272','#FB6A4A','#CB181D'],
   income:['#EAF4EF','#D6EEE1','#BBE4CF','#8FD1B9','#4DB5A7','#1B8E8A'],
-  poverty:['#F7F4EA','#E9E2C8','#D8C996','#C8A861','#A57D33','#7E5A20'],
-  working:['#F7F4EA','#E9D7B0','#D8B377','#C17F42','#A75B2A','#7E3E18'],
+  poverty:['#FFF5F0','#FEE0D2','#FCBBA1','#FC9272','#FB6A4A','#CB181D'],
+  working:['#FFF5F0','#FEE0D2','#FCBBA1','#FC9272','#FB6A4A','#CB181D'],
   race:['#EDF7F8','#D7EFF1','#B3DFE3','#7EC4CD','#4096A7','#23667D'],
   education:['#F2F5FA','#DCE5F2','#B9CBE5','#8DAAD2','#5E83B8','#395B93']
 };
@@ -719,6 +870,13 @@ function getBorough(f) {
 
   return 'Unknown';
 }
+function isNeighborhoodFeature(f) {
+  const name = normalize(getNtaName(f));
+  return name &&
+    !name.includes('park cemetery') &&
+    name !== 'airport' &&
+    name !== 'rikers island';
+}
 
 function rowObj(row) {
   if (!Array.isArray(row)) return row || {};
@@ -733,6 +891,9 @@ function rowGeoID(row) {
     return String(found || '').toUpperCase().trim();
   }
   return String(r.GeoID || r.geoid || r.GeoId || r.geo_id || r.NTA || r.nta || r.GeographyID || r.geography_id || '').toUpperCase().trim();
+}
+function geoLookupRow(row) {
+  return geoLookupById.get(String(rowGeoID(row)).trim()) || null;
 }
 function rowValue(row) {
   const r = rowObj(row);
@@ -761,6 +922,8 @@ function rowYear(row) {
     const m = String(v ?? '').match(/\d{4}/);
     if (m) return Number(m[0]);
   }
+  const period = numeric(r.TimePeriodID ?? r.timePeriodID ?? r.TimePeriodId ?? r.time_period_id);
+  if (Number.isFinite(period)) return period;
   return -Infinity;
 }
 function rowGeoType(row) {
@@ -780,9 +943,24 @@ function rowMeasureID(row) {
   return String(r.MeasureID ?? r.measureID ?? r.measure_id ?? r.MeasureId ?? r.measureId ?? '');
 }
 
+function columnarToRows(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return [];
+  const entries = Object.entries(payload).filter(([,value]) => Array.isArray(value));
+  if (!entries.length) return [];
+  const rowCount = entries[0][1].length;
+  if (!entries.every(([,value]) => value.length === rowCount)) return [];
+  return Array.from({length:rowCount}, (_,i) => {
+    const row = {};
+    entries.forEach(([key,value]) => { row[key] = value[i]; });
+    return row;
+  });
+}
+
 function normalizeRows(payload) {
   if (Array.isArray(payload)) return payload;
   if (!payload || typeof payload !== 'object') return [];
+  const columnar = columnarToRows(payload);
+  if (columnar.length) return columnar;
   if (Array.isArray(payload.data)) return payload.data;
   if (Array.isArray(payload.rows)) return payload.rows;
   if (Array.isArray(payload.values)) return payload.values;
@@ -802,7 +980,13 @@ function rowGeoName(row) {
     const maybe = r.__array.find(v => typeof v === 'string' && String(v).length > 4 && !/^[A-Z]{2}\d+/.test(String(v).toUpperCase()));
     return normalize(maybe || '');
   }
-  return normalize(r.GeoName || r.geoname || r.GeographyName || r.Geography || r.NTAName || r.name || '');
+  const lookup = geoLookupRow(row);
+  return normalize(r.GeoName || r.geoname || r.GeographyName || r.Geography || r.NTAName || r.name || lookup?.Name || '');
+}
+function rowGeoBorough(row) {
+  const r = rowObj(row);
+  const lookup = geoLookupRow(row);
+  return normalize(r.Borough || r.borough || lookup?.Borough || '');
 }
 
 function buildOfficialMap(payload, measureID) {
@@ -825,9 +1009,14 @@ function buildOfficialMap(payload, measureID) {
     grouped.set(code, arr);
     const name = rowGeoName(r);
     if (name) {
-      const narr = groupedByName.get(name) || [];
+      const borough = rowGeoBorough(r);
+      const nameKey = borough ? `${name}|${borough}` : name;
+      const narr = groupedByName.get(nameKey) || [];
       narr.push(item);
-      groupedByName.set(name, narr);
+      groupedByName.set(nameKey, narr);
+      const loose = groupedByName.get(name) || [];
+      loose.push(item);
+      groupedByName.set(name, loose);
     }
   });
 
@@ -836,22 +1025,64 @@ function buildOfficialMap(payload, measureID) {
     out.set(code, arr[0]);
   });
 
-  // Name fallback for geographies where code fields differ.
-  if (out.size === 0 && groupedByName.size) {
-    geoFeatures.forEach(f => {
-      const fname = normalize(getNtaName(f));
-      let best = null;
-      groupedByName.forEach((arr, name) => {
-        if (fname.includes(name) || name.includes(fname)) best = arr;
+  // Name fallback for EHDP GeoID rows, whose numeric IDs differ from map NTA codes.
+  geoFeatures.forEach(f => {
+    const featureCode = getNtaCode(f);
+    if (!featureCode || out.has(featureCode)) return;
+    const fname = normalize(getNtaName(f));
+    const fboro = normalize(getBorough(f));
+    let best = groupedByName.get(`${fname}|${fboro}`) || groupedByName.get(fname) || null;
+    if (!best) {
+      groupedByName.forEach((arr, nameKey) => {
+        const name = nameKey.split('|')[0];
+        if (!best && name && (fname.includes(name) || name.includes(fname))) best = arr;
       });
-      if (best) {
-        best.sort((a,b) => b.year - a.year);
-        out.set(getNtaCode(f), best[0]);
-      }
-    });
-  }
+    }
+    if (best) {
+      best.sort((a,b) => b.year - a.year);
+      out.set(featureCode, best[0]);
+    }
+  });
 
   return out;
+}
+
+function buildGeoLookup(payload) {
+  geoLookupById = new Map();
+  normalizeRows(payload)
+    .filter(row => normalize(row.GeoType).includes('nta'))
+    .forEach(row => {
+      const id = String(row.GeoID || '').trim();
+      if (id) geoLookupById.set(id, row);
+    });
+}
+
+function applyOfficialAsthmaData() {
+  if (!completeData || !completeData.size) return 0;
+  let updated = 0;
+  geoFeatures.forEach(feature => {
+    const code = getNtaCode(feature) || ('NTA_' + normalize(getNtaName(feature)).replaceAll(' ','_'));
+    const row = completeData.get(code);
+    if (!row) return;
+    const ed = officialData.ed_rate.get(code);
+    const hosp = officialData.hosp_rate.get(code);
+    let rowUpdated = false;
+    if (ed && Number.isFinite(ed.value)) {
+      row.Youth_Asthma_ED_Rate_5_17_per_10000 = ed.value;
+      rowUpdated = true;
+    }
+    if (hosp && Number.isFinite(hosp.value)) {
+      row.Youth_Asthma_Hosp_Rate_5_17_per_10000 = hosp.value;
+      rowUpdated = true;
+    }
+    if (rowUpdated) {
+      row.Asthma_Data_Status = 'Official EHDP asthma data';
+      row.Asthma_Source = 'NYC Environment & Health Data Portal production indicators 2383 and 2386';
+      row.Notes = 'Asthma rates updated from the latest EHDP production data available for matched NTA2010 neighborhoods; demographic context remains starter/modeled where ACS values are not embedded.';
+      updated += 1;
+    }
+  });
+  return updated;
 }
 
 function matchDemoRow(feature) {
@@ -1319,14 +1550,19 @@ function updateTable() {
   const highPovertyRows = allRows.filter(r => numeric(r.Poverty_Rate_Percent) >= 20);
   const high = rows[0];
 
-  setTextSafe('kpiTotal', geoFeatures.length);
+  const neighborhoodCount = neighborhoodBoroughView === 'all'
+    ? geoFeatures.length
+    : geoFeatures.filter(f => getBorough(f) === neighborhoodBoroughView).length;
+  setTextSafe('kpiTotal', neighborhoodCount);
   setTextSafe('kpiAsthma', highAsthmaRows.length);
   setTextSafe('kpiHigh', high ? formatLayerValue(high.value) : '—');
-  setTextSafe('kpiDemo', highPovertyRows.length);
+  updateAsthmaSummary(highAsthmaRows);
+  updatePovertySummary(highPovertyRows);
 
-  const tableHTML = rows.length ? rows.slice(0, 25).map((r, idx) => {
+  const selectedLabel = LAYER_LABELS[selectedLayer] || 'Selected value';
+  const tableLimit = rankingView === 'full' ? rows.length : 10;
+  const tableHTML = rows.length ? rows.slice(0, tableLimit).map((r, idx) => {
     const demo = r.demo || {};
-    const asthma = numeric(demo.Youth_Asthma_ED_Rate_5_17_per_10000);
     const displayValue = formatLayerValue(r.value);
     return `
       <tr>
@@ -1337,13 +1573,36 @@ function updateTable() {
         </td>
         <td>
           <strong style="font-size:18px">${esc(displayValue)}</strong><br>
-          <span style="color:#52657a">Youth asthma ED<br>rate, ages 5–17</span>
+          <span style="color:#52657a">${esc(selectedLabel)}</span>
         </td>
       </tr>
     `;
   }).join('') : '<tr><td colspan="2">No neighborhood values for this layer/filter.</td></tr>';
 
   setHTMLSafe('rankBody', tableHTML);
+  const rankListPanel = document.getElementById('rankListPanel');
+  if (rankListPanel) rankListPanel.hidden = rankingView === 'summary';
+
+  if (!rows.length) {
+    setHTMLSafe('rankingSummary', 'No neighborhoods match the current filters for this layer.');
+  } else {
+    const topRows = rows.slice(0, 5);
+    const boroughCounts = new Map();
+    topRows.forEach(r => {
+      const boro = getBorough(r.feature);
+      boroughCounts.set(boro, (boroughCounts.get(boro) || 0) + 1);
+    });
+    const leadingBorough = [...boroughCounts.entries()].sort((a,b) => b[1] - a[1])[0]?.[0] || 'the city';
+    const list = topRows.map(r =>
+      `<li><strong>${esc(getNtaName(r.feature))}</strong>, ${esc(getBorough(r.feature))}: ${esc(formatLayerValue(r.value))}</li>`
+    ).join('');
+    setHTMLSafe('rankingSummary',
+      `<strong>Ranking summary:</strong> neighborhoods are ranked from highest to lowest ${esc(selectedLabel)} among the currently visible map areas. ` +
+      `The highest value is <strong>${esc(getNtaName(high.feature))}</strong> in ${esc(getBorough(high.feature))} at <strong>${esc(formatLayerValue(high.value))}</strong>. ` +
+      `Among the top five neighborhoods, ${esc(leadingBorough)} appears most often under the current filter.` +
+      `<ol>${list}</ol>`
+    );
+  }
 
   const starterCount = allRows.filter(r => r.Asthma_Data_Status === 'Starter/observed' || r.Asthma_Data_Status === 'Starter value').length;
   const modeledCount = allRows.filter(r => normalize(r.Asthma_Data_Status).includes('modeled')).length;
@@ -1356,6 +1615,66 @@ function updateTable() {
     `Staten Island neighborhoods: ${siCount}<br>` +
     `Observed/source rows: ${starterCount}<br>` +
     `Modeled estimate rows: ${modeledCount}`
+  );
+}
+
+function updatePovertySummary(highPovertyRows) {
+  const selected = povertyBoroughView;
+  const rows = highPovertyRows
+    .filter(row => selected === 'all' || row.Borough === selected)
+    .sort((a,b) => numeric(b.Poverty_Rate_Percent) - numeric(a.Poverty_Rate_Percent));
+  const label = selected === 'all' ? 'all boroughs' : selected;
+  const boroughCounts = new Map();
+  highPovertyRows.forEach(row => {
+    boroughCounts.set(row.Borough, (boroughCounts.get(row.Borough) || 0) + 1);
+  });
+  const countText = [...boroughCounts.entries()]
+    .sort((a,b) => b[1] - a[1])
+    .map(([boro,count]) => `${esc(boro)}: ${count}`)
+    .join(', ');
+
+  if (!rows.length) {
+    setHTMLSafe('povertySummary', `<strong>High-poverty summary:</strong> no high-poverty neighborhoods are listed for ${esc(label)} under the current dataset.`);
+    return;
+  }
+
+  const list = rows.slice(0, 8).map(row =>
+    `<li><strong>${esc(row.NTA_Name)}</strong>, ${esc(row.Borough)}: ${esc(pct(numeric(row.Poverty_Rate_Percent)))} poverty; ${esc(row.Working_Class_Classification || 'No classification')}</li>`
+  ).join('');
+  setHTMLSafe('povertySummary',
+    `<strong>High-poverty summary:</strong> ${rows.length} neighborhoods in ${esc(label)} have poverty rates of 20% or higher. ` +
+    `Citywide borough counts: ${countText || 'none'}.` +
+    `<ul>${list}</ul>`
+  );
+}
+
+function updateAsthmaSummary(highAsthmaRows) {
+  const selected = asthmaBoroughView;
+  const rows = highAsthmaRows
+    .filter(row => selected === 'all' || row.Borough === selected)
+    .sort((a,b) => numeric(b.Youth_Asthma_ED_Rate_5_17_per_10000) - numeric(a.Youth_Asthma_ED_Rate_5_17_per_10000));
+  const label = selected === 'all' ? 'all boroughs' : selected;
+  const boroughCounts = new Map();
+  highAsthmaRows.forEach(row => {
+    boroughCounts.set(row.Borough, (boroughCounts.get(row.Borough) || 0) + 1);
+  });
+  const countText = [...boroughCounts.entries()]
+    .sort((a,b) => b[1] - a[1])
+    .map(([boro,count]) => `${esc(boro)}: ${count}`)
+    .join(', ');
+
+  if (!rows.length) {
+    setHTMLSafe('asthmaSummary', `<strong>High-asthma summary:</strong> no high-asthma neighborhoods are listed for ${esc(label)} under the current dataset.`);
+    return;
+  }
+
+  const list = rows.slice(0, 8).map(row =>
+    `<li><strong>${esc(row.NTA_Name)}</strong>, ${esc(row.Borough)}: ${esc(fmt(numeric(row.Youth_Asthma_ED_Rate_5_17_per_10000), 1))} ED visits per 10,000; ${esc(fmt(numeric(row.Youth_Asthma_Hosp_Rate_5_17_per_10000), 1))} hospitalizations per 10,000</li>`
+  ).join('');
+  setHTMLSafe('asthmaSummary',
+    `<strong>High-asthma summary:</strong> ${rows.length} neighborhoods in ${esc(label)} have youth asthma ED rates of 160 or more per 10,000. ` +
+    `Citywide borough counts: ${countText || 'none'}.` +
+    `<ul>${list}</ul>`
   );
 }
 
@@ -1372,6 +1691,34 @@ function bindControls() {
     searchText = e.target.value;
     draw();
   });
+  const rankingSelect = document.getElementById('rankingView');
+  if (rankingSelect) {
+    rankingSelect.addEventListener('change', e => {
+      rankingView = e.target.value;
+      updateTable();
+    });
+  }
+  const neighborhoodSelect = document.getElementById('neighborhoodBoroughView');
+  if (neighborhoodSelect) {
+    neighborhoodSelect.addEventListener('change', e => {
+      neighborhoodBoroughView = e.target.value;
+      updateTable();
+    });
+  }
+  const asthmaSelect = document.getElementById('asthmaBoroughView');
+  if (asthmaSelect) {
+    asthmaSelect.addEventListener('change', e => {
+      asthmaBoroughView = e.target.value;
+      updateTable();
+    });
+  }
+  const povertySelect = document.getElementById('povertyBoroughView');
+  if (povertySelect) {
+    povertySelect.addEventListener('change', e => {
+      povertyBoroughView = e.target.value;
+      updateTable();
+    });
+  }
   const dl = document.getElementById('downloadCsvBtn');
   if (dl) {
     dl.addEventListener('click', function () {
@@ -1483,20 +1830,23 @@ async function init() {
   try {
     setTextSafe('status', 'Loading NTA2010 geography from ArcGIS FeatureServer…');
     const geo = await fetchFirstJson(SOURCES.nta2010);
-    geoFeatures = geo.features.filter(f => getNtaName(f));
+    geoFeatures = geo.features.filter(isNeighborhoodFeature);
     buildCompleteDataset();
 
     setTextSafe('status', 'Loading official EHDP youth asthma data…');
-    // Complete dataset drives all visible layers. Optional official endpoint checks do not control the displayed map.
+    let officialMatches = 0;
     try {
-      const [edRows, hospRows] = await Promise.all([
+      const [geoLookupRows, edRows, hospRows] = await Promise.all([
+        fetchAnyJson(SOURCES.geoLookup),
         fetchAnyJson(SOURCES.asthmaEd),
         fetchAnyJson(SOURCES.asthmaHosp)
       ]);
+      buildGeoLookup(geoLookupRows);
       officialData.ed_rate = buildOfficialMap(edRows, MEASURES.ed_rate);
       officialData.ed_number = buildOfficialMap(edRows, MEASURES.ed_number);
       officialData.hosp_rate = buildOfficialMap(hospRows, MEASURES.hosp_rate);
       officialData.hosp_number = buildOfficialMap(hospRows, MEASURES.hosp_number);
+      officialMatches = applyOfficialAsthmaData();
     } catch(e) {
       console.warn('Official EHDP optional load failed; complete modeled/starter dataset remains active.', e);
     }
@@ -1510,7 +1860,7 @@ async function init() {
 
     document.getElementById('status').className = 'status ok';
     setTextSafe('status', edCount
-      ? 'Loaded successfully. Complete NTA2010 dataset generated for every neighborhood using starter rows plus modeled estimates for gaps.'
+      ? `Loaded successfully. Official EHDP asthma rates matched to ${officialMatches} neighborhoods; demographic context uses starter rows plus modeled estimates for gaps.`
       : 'Loaded successfully. Complete NTA2010 dataset generated for every neighborhood using starter rows plus modeled estimates for gaps.');
 
     draw();
