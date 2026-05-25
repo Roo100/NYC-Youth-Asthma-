@@ -1631,8 +1631,13 @@ function updateTable() {
   }).join('') : '<tr><td colspan="2">No neighborhood values for this layer/filter.</td></tr>';
 
   setHTMLSafe('rankBody', tableHTML);
+  const rankingSummary = document.getElementById('rankingSummary');
+  if (rankingSummary) rankingSummary.hidden = rankingView !== 'summary';
   const rankListPanel = document.getElementById('rankListPanel');
-  if (rankListPanel) rankListPanel.hidden = rankingView === 'summary';
+  if (rankListPanel) {
+    rankListPanel.hidden = rankingView === 'summary';
+    rankListPanel.scrollTop = 0;
+  }
 
   if (!rows.length) {
     setHTMLSafe('rankingSummary', 'No neighborhoods match the current filters for this layer.');
