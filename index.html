@@ -425,6 +425,12 @@ select:focus,input:focus{
   font-size:28px;
   line-height:1;
 }
+.metric-context{
+  color:#52657a;
+  font-size:12px;
+  line-height:1.35;
+  margin-top:5px;
+}
 .metric-icon{
   width:40px;height:40px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -675,7 +681,7 @@ td strong{
       <div class="metric-grid">
         <div class="metric-box"><div class="metric-text"><div class="metric-label">NYC neighborhoods</div><div class="metric-value" id="kpiTotal">—</div></div><div class="metric-icon">◈</div></div>
         <div class="metric-box"><div class="metric-text"><div class="metric-label">High-asthma neighborhoods</div><div class="metric-value" id="kpiAsthma">—</div></div><div class="metric-icon">◉</div></div>
-        <div class="metric-box"><div class="metric-text"><div class="metric-label">Highest value in this map view</div><div class="metric-value" id="kpiHigh">—</div></div><div class="metric-icon">↗</div></div>
+        <div class="metric-box"><div class="metric-text"><div class="metric-label">Highest neighborhood shown</div><div class="metric-value" id="kpiHigh">—</div><div class="metric-context" id="kpiHighContext">Highest value for the selected map layer.</div></div><div class="metric-icon">↗</div></div>
       </div>
 
       <div class="field rank-menu">
@@ -1595,6 +1601,10 @@ function updateTable() {
   setTextSafe('kpiTotal', neighborhoodCount);
   setTextSafe('kpiAsthma', highAsthmaRows.length);
   setTextSafe('kpiHigh', high ? formatLayerValue(high.value) : '—');
+  setTextSafe('kpiHighContext', high
+    ? `This is the highest ${LAYER_LABELS[selectedLayer] || 'selected map layer'} value among the neighborhoods currently shown.`
+    : 'No neighborhood values are shown for this map layer and filter.'
+  );
   updateAsthmaSummary(highAsthmaRows);
   updatePovertySummary(highPovertyRows);
 
