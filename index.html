@@ -1798,7 +1798,7 @@ function validateIncomeSnapshot(snapshot) {
 
 async function loadIncomeSnapshot() {
   try {
-    incomeSnapshot = validateIncomeSnapshot(await incomeFetchJson('data/income_latest.json'));
+    incomeSnapshot = validateIncomeSnapshot(await incomeFetchJson(`data/income_latest.json?checked=${Date.now()}`));
     const checked = new Date(incomeSnapshot.checked_at);
     const age = Date.now() - checked.getTime();
     const stale = age > 3 * 24 * 60 * 60 * 1000;
