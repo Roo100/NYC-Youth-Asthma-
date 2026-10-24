@@ -1,34 +1,34 @@
-# Income layer: source and geographic matching
+# Current income layer and automatic refresh
 
-## Published estimates
+Income now uses NYC Planning's latest published ACS five-year economic profile by NTA. The initial release is **2020–2024 ACS**, in **2024 inflation-adjusted dollars**, for **197 residential NTA2020 neighborhoods**. It replaces the earlier 2014–2018 layer.
 
-- Original producer: U.S. Census Bureau, American Community Survey (ACS).
-- Publisher of the NTA compilation: NYC Department of City Planning, Population Division.
-- Official source: [2014–2018 ACS Economic Profile by NTA](https://www.nyc.gov/assets/planning/download/office/planning-level/nyc-population/acs/econ_2018_acs5yr_nta.xlsx).
-- Source worksheet: `EconData`. Definitions are in `Dictionary`; the workbook's `About` sheet identifies the ACS period and Population FactFinder processing.
-- Measure: median household income, field `MdHHIncE`; 90% margin of error, `MdHHIncM`. These are survey estimates of annual household income, not individual earnings.
-- Reference period: 2014–2018 ACS five-year estimates. Dollar basis: 2018 inflation-adjusted dollars. The estimates do not describe current incomes.
-- Geography: `GeoType = NTA2010`. Join key: source `GeoID` to map `ntacode` (for example, `MN34`).
-- Retrieved: October 23, 2026. The source SHA-256 is recorded on every exported income record.
+## Official sources
 
-## Why this vintage
+- [NYC Planning ACS release catalog](https://www.nyc.gov/content/planning/pages/resources/datasets/american-community-survey).
+- [Machine-readable release catalog](https://apps.nyc.gov/content-api/v1/content/planning/resources/datasets/american-community-survey).
+- [Current economic workbook](https://s-media.nyc.gov/agencies/dcp/assets/files/excel/data-tools/population/american-community-survey/Econ_2024ACS5YR_NTA.xlsx).
+- [Official NTA2020 boundaries](https://data.cityofnewyork.us/City-Government/2020-Neighborhood-Tabulation-Areas-NTAs/9nt8-h7nd).
 
-The existing map uses NTA2010 polygons. The official 2015–2019 economic workbook currently published at `econ_2019_acs5yr_nta.xlsx` contains `NTA2020` geography with different codes and boundaries. It cannot be directly substituted into this map. The selected 2014–2018 file explicitly supplies NTA2010 estimates. This choice establishes a boundary-compatible baseline, not a claim that these are the newest income estimates available.
+The U.S. Census Bureau produces the ACS. NYC Department of City Planning compiles the NTA estimates for Population FactFinder. The workbook's About sheet explicitly identifies the 2020–2024 reference period. EconData supplies median household income (MdHHIncE) and its 90% margin of error (MdHHIncM). The Data Dictionary identifies the measure's universe as households. These are estimates of annual household income, not individual earnings or current-year income.
 
-## Join and missing-data rules
+## Automatic updates and reliability
 
-The income join uses exact codes only, with no neighborhood-name matching, spatial redistribution, borough averages, or averaging of tract medians. The income source has 195 distinct NTA2010 codes and 191 numeric median-income estimates. Four source records have no income estimate: BX98 (Rikers Island), MN99 (park-cemetery-etc-Manhattan), QN98 (Airport), and SI99 (park-cemetery-etc-Staten Island). Missing estimates remain null and display as no data. Other geography exclusions follow the existing map filter. With the primary geography service used for validation, all 188 displayed neighborhoods have exact code matches and published income estimates.
+The GitHub Actions workflow Refresh official neighborhood income runs daily at 10:17 UTC and can also run manually. scripts/refresh_income.py discovers the highest release year linked as an NTA economic workbook in the official catalog. It downloads the workbook and official geometry, validates them, and saves data/income_latest.json and data/income_latest.csv. It commits the validated snapshot and requests a GitHub Pages rebuild. A newer annual release will be adopted without changing a year in the dashboard code, provided the supported workbook schema and NTA2020 geography remain compatible.
 
-The dashboard embeds the published income records so a separate income service failure cannot activate the previous generated values. The accompanying CSV preserves source names, raw estimate values, margins of error, period, geography, field names, retrieval date and source URL. The dashboard's dataset download includes these fields for each displayed map record. Source names may differ in punctuation from polygon display names; only codes determine matches.
+Validation requires the workbook's period to match the release, expected columns, unique NTA2020 codes, sufficient estimate coverage, and exact equality of residential income and boundary codes. A source error, schema change, incomplete release, or geography change fails the job instead of overwriting the last validated snapshot. Requests have timeouts and retries. A newer stored release cannot be overwritten with an older release.
 
-## Interpretation and affected outputs
+The dashboard fetches the same-origin snapshot without a browser cache on every page load. It displays the reference period, dollar year and last successful source-check timestamp. After three days without a source check, it visibly identifies the refresh as overdue. The last validated snapshot remains available if the official income source is temporarily down. A malformed or missing dashboard snapshot displays an error rather than substituting generated or historical income values. Annual ACS publication is distinct from the daily update check; daily checks do not create daily income observations.
 
-The former starter incomes, borough income presets and neighborhood income multipliers have been removed from the active data paths. No generated income fallback is used. Income metadata is separate from asthma data status. Margins of error appear in neighborhood cards; rankings remain descriptive and do not test whether differences are statistically significant.
+Source URL, source-workbook SHA-256, reference period, dollar year and check timestamp are preserved in the downloadable data. Estimates and margins of error retain published precision in the data; the map rounds dollar displays to whole dollars. Nulls remain unavailable.
 
-Poverty, education and race/ethnicity still use the pre-existing unverified starter/generated data and are visibly identified as provisional. The working-class score and classification are disabled because they would combine the corrected income measure with unverified poverty and education inputs. These other demographic measures require a separate source audit before substantive use.
+## Matching boundaries
 
-Asthma retains its existing EHDP loading and fallback behavior. Its latest source periods may differ from the income period; a common-period analysis has not been performed. Neither geographic matching nor side-by-side viewing demonstrates an association or causal relationship. No income–asthma interpretation is presented as a finding.
+Income uses exact GeoID to nta2020 matches, with NTAType = 0 / ntatype = 0 selecting residential neighborhoods. No name matching, borough presets, interpolated income values or averages of tract medians are used. The browser validates income codes against official geometry before activating the income map. A boundary-service failure leaves the previous map selected and provides a retry message.
 
-## Reproduction
+Asthma indicators remain NTA2010. Selecting income switches the map to NTA2020 and its corresponding rankings, neighborhood details and CSV export. Switching back restores the original asthma geography and data. NTA2010 asthma values are not attached to NTA2020 polygons, so income cards do not show asthma values. Harmonizing both strands for a statistical comparison remains separate work.
 
-Download the official workbook above as `econ2018.xlsx`. The committed `replace_income.py` documents the source extraction and replacement procedure used for this correction. It extracts the published NTA estimates directly from the workbook's XML; it does not calculate medians. Run it against the pre-correction `index.html` when reproducing the migration. It is a one-time migration script, not a recurring refresh job.
+Pre-existing poverty, education and race/ethnicity layers remain provisional, and the working-class score remains disabled. No income–asthma association or causal finding is asserted.
+
+## Reproduce and inspect
+
+Run python scripts/refresh_income.py with Python 3.12 and network access. No third-party packages or API key are required. Inspect workflow history for failures and the snapshot's checked_at, release_year, reference_period, geography and source_sha256 for provenance. The older income CSV and one-time migration script are historical artifacts and are not used by the dashboard or refresh process.
